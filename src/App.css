@@ -1,0 +1,11 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.section__padding{
+  padding: 4rem 6rem;
+}
+.section__margin{
+  margin: 4rem 6rem;
+}
