@@ -1,54 +1,55 @@
-import React from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined } from '@ant-design/icons';
+import React, { Component } from 'react'
+import { Layout, Menu } from 'antd';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Category, ProductList } from '..';
-const Container = () => {
-    
-    const { SubMenu } = Menu;
-    const { Header, Content, Footer, Sider } = Layout;
 
+const { Header, Content, Footer, Sider } = Layout;
+let productInfo={title:"ProductList"}
+let categoryInfo={title:"CategoryList"}
+
+export default class Container extends Component {
+   
+  state={currentCategory:"",products:[]}
+  changeCategory = (category) => {
+    this.setState({ currentCategory: category.categoryName })
+  }
+  getProducts=()=>{
+    fetch("http://localhost:3000/products")
+    .then(response=>response.json())
+    .then(data=>this.setState({products:data}))
+  }
+  render() {
     return (
-        <div>
-        <Layout>
-            <Header className="header">
-                <div className="logo" />
-            </Header>
-            <Content style={{ padding: '0 50px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item>Login</Breadcrumb.Item>
-                    <Breadcrumb.Item>Products</Breadcrumb.Item>
-                </Breadcrumb>
-                <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
-                    <Sider className="site-layout-background" width={200}>
-                        <Menu
-                            mode="inline"
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
-                            style={{ height: '100%' }}
-                        >
-                            <SubMenu key="sub1" icon={<LaptopOutlined />} title="Products">
-                            <Category/>
-
-                            </SubMenu>
-                            <SubMenu key="sub2" icon={<UserOutlined />} title="Users">
-                                <Menu.Item>
-                                    Users
-                                </Menu.Item>
-
-                            </SubMenu>
-
-                        </Menu>
-                    </Sider>
-                    <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                       <ProductList/>
-
-                    </Content>
-                </Layout>
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>Dashboard ©2022 Created by me</Footer>
-        </Layout>
-    </div>
+      <Layout>
+      <Sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        onBreakpoint={broken => {
+          console.log(broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+      >
+        <div className="logo" />
+        <Menu theme="dark" mode="inline" icon={<VideoCameraOutlined />} defaultSelectedKeys={['4']}>
+          <Category currentCategory={this.state.currentCategory} changeCategory={this.changeCategory} info={categoryInfo} />
+          <Menu.Item key="2afda" icon={<UserOutlined />} >
+            nav 2
+          </Menu.Item>
+         
+        </Menu>
+      </Sider>
+      <Layout>
+        <Content style={{ margin: '24px 16px 0' }}>
+          <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <ProductList products={this.state.products} currentCategory={this.state.currentCategory} info={productInfo}/>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      </Layout>
+    </Layout>
     )
-}
+  }
+  }
 
-export default Container
