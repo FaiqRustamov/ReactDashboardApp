@@ -14,3 +14,6 @@
   .site-layout-background {
     background: #fff;
   }
+  .ant-table-pagination.ant-pagination {
+    display: none!important;
+  }

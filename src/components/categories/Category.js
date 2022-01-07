@@ -7,30 +7,22 @@ const { SubMenu } = Menu;
 export default class Category extends Component {
 
 
-  state = {
-    categories: []
-  };
 
-  componentDidMount(){
-    this.getCategories();
-  }
-
-  getCategories=()=>{
-    fetch("http://localhost:3000/categories")
-    .then(response=>response.json())
-    .then(data=>this.setState({categories:data}))
-  }
   render() {
+    const {categories,info,changeCategory,currentCategory}=this.props
     return (
 
-      <SubMenu key="sub1" icon={<LaptopOutlined />} title={this.props.info.title}>
+      <SubMenu key="sub1" icon={<LaptopOutlined />} title={info.title}>
+     
         {
-          this.state.categories.map(category => (
-            <Menu.Item onClick={() => this.props.changeCategory(category)} key={category.id}>{category.categoryName}</Menu.Item>
+          categories?.map(category => (
+            <Menu.Item onClick={() => changeCategory(category)} key={category.id}>
+            {category.categoryName}
+            </Menu.Item>
 
           ))
         }
-        {this.props.currentCategory}
+        {currentCategory}
 
       </SubMenu>
 
